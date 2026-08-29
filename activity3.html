@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity 3 - Amplitude and Period</title>
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --ink:#172033;
+  --muted:#60708a;
+  --accent:#315efb;
+  --good:#147a4b;
+  --bad:#b42318;
+  --border:#d9e0eb;
+  --purple:#7048b8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.hero{
+  background:linear-gradient(135deg,#233876,#315efb);
+  color:white;
+  padding:24px;
+  border-radius:18px;
+  margin-bottom:18px;
+}
+.hero h1{margin:0 0 8px;font-size:30px}
+.hero p{margin:4px 0;line-height:1.5}
+.progress{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:16px;
+}
+.step{
+  padding:9px 10px;
+  background:rgba(255,255,255,.18);
+  border-radius:10px;
+  text-align:center;
+  font-size:14px;
+  font-weight:700;
+}
+.step.active{background:#fff;color:#233876}
+.grid2{
+  display:grid;
+  grid-template-columns:1.5fr .9fr;
+  gap:18px;
+  align-items:start;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 3px 14px rgba(20,35,70,.05);
+}
+h2{margin:0 0 12px;font-size:21px}
+h3{margin:18px 0 8px;font-size:17px}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  margin-bottom:12px;
+}
+button,select,input{font:inherit}
+button{
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:700;
+  background:#e9eefc;
+  color:#233876;
+}
+button.primary{background:var(--accent);color:white}
+button:hover{filter:brightness(.98)}
+select,input{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:9px 10px;
+  background:white;
+}
+canvas{
+  width:100%;
+  height:auto;
+  display:block;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:white;
+}
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin:10px 0 0;
+  font-size:13px;
+}
+.legend span{display:flex;align-items:center;gap:6px}
+.line{
+  width:24px;height:3px;border-radius:3px;background:#315efb;display:inline-block
+}
+.line.compare{background:#7048b8}
+.status{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#f2f5fb;
+  min-height:42px;
+  line-height:1.45;
+}
+.status.good{background:#eaf7f0;color:var(--good)}
+.status.bad{background:#fff0ee;color:var(--bad)}
+.task{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:13px;
+  margin:11px 0;
+  background:#fbfcff;
+}
+.task p{margin:0 0 9px;line-height:1.55}
+.choice-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.choice{background:#f0f3f9;color:#26354d}
+.choice.correct{background:#dff4e8;color:#11663f}
+.choice.wrong{background:#fde8e5;color:#9d2118}
+input.answer-correct{border:2px solid #147a4b;background:#eaf7f0}
+input.answer-wrong{border:2px solid #b42318;background:#fff0ee}
+.inline-inputs{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.inline-inputs input{
+  width:76px;
+  text-align:center;
+  font-weight:700;
+}
+.footer-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.badge{
+  display:inline-block;
+  font-size:12px;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#315efb;
+  margin-bottom:8px;
+}
+.concept{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.concept-box{
+  border:1px solid var(--border);
+  background:#fbfcff;
+  border-radius:12px;
+  padding:12px;
+}
+.concept-box strong{display:block;margin-bottom:5px}
+.formula{
+  font-size:18px;
+  font-weight:700;
+  padding:10px;
+  text-align:center;
+  background:#f2f5fb;
+  border-radius:10px;
+  margin-top:8px;
+}
+.hidden{display:none}
+.summary{
+  margin-top:14px;
+  border-top:1px solid var(--border);
+  padding-top:12px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  border:1px solid var(--border);
+  padding:8px;
+  text-align:center;
+}
+th{background:#f1f4fa}
+
+.equation-lab{
+  margin-top:18px;
+  border-top:1px solid var(--border);
+  padding-top:16px;
+}
+.equation-entry{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.equation-entry input{
+  flex:1;
+  min-width:210px;
+  font-size:17px;
+  font-weight:700;
+}
+.example-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.example-buttons button{
+  padding:8px 11px;
+  font-size:13px;
+}
+
+@media(max-width:880px){
+  .grid2{grid-template-columns:1fr}
+  .progress{grid-template-columns:1fr 1fr}
+  .concept{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>Activity 3: Amplitude and Period</h1>
+    <p><strong>Learning goals:</strong> Understand what <strong>amplitude</strong> and <strong>period</strong> mean, describe how they change a trigonometric graph, and identify which part of the equation controls each feature.</p>
+    <p>We will investigate sine and cosine graphs using angles in <strong>degrees</strong>.</p>
+    <div class="progress">
+      <div class="step active" id="s1">1 Compare</div>
+      <div class="step" id="s2">2 Discover</div>
+      <div class="step" id="s3">3 Generalise</div>
+      <div class="step" id="s4">4 Master</div>
+    </div>
+  </section>
+
+  <div class="grid2">
+    <section class="card">
+      <h2>Explore the Graphs</h2>
+      <div class="controls">
+        <label><strong>Function:</strong>
+          <select id="family">
+            <option value="sin">Sine</option>
+            <option value="cos">Cosine</option>
+          </select>
+        </label>
+
+        <label><strong>Amplitude number a:</strong>
+          <select id="aSelect">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+          </select>
+        </label>
+
+        <label><strong>Period number b:</strong>
+          <select id="bSelect">
+            <option value="0.5">0.5</option>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </label>
+
+        <button class="primary" id="basicBtn">Show basic graph</button>
+      </div>
+
+      <div class="status" id="equationDisplay"></div>
+      <canvas id="graph" width="900" height="520" aria-label="Interactive amplitude and period graph"></canvas>
+
+      <div class="legend">
+        <span><i class="line"></i><strong id="mainLegend">Transformed graph</strong></span>
+        <span><i class="line compare"></i><strong id="basicLegend">Basic graph</strong></span>
+      </div>
+
+      <div class="concept">
+        <div class="concept-box">
+          <strong>Try changing only a</strong>
+          Keep <b>b = 1</b>. Compare \(y=\sin x\) with \(y=2\sin x\), or \(y=\cos x\) with \(y=2\cos x\).
+          <div class="small">Watch what happens to the maximum and minimum values.</div>
+        </div>
+        <div class="concept-box">
+          <strong>Try changing only b</strong>
+          Keep <b>a = 1</b>. Compare \(y=\sin x\) with \(y=\sin 2x\), or \(y=\cos x\) with \(y=\cos 2x\).
+          <div class="small">Count how many complete cycles appear from 0° to 360°.</div>
+        </div>
+      </div>
+
+      <div class="status" id="exploreHint">
+        Start with <strong>a = 2, b = 1</strong>. Then try <strong>a = 1, b = 2</strong>.
+      </div>
+
+      <div class="equation-lab">
+        <h3>Try Your Own Trigonometric Equation</h3>
+        <p class="small">
+          Type a sine or cosine equation below. The graph will be drawn immediately
+          after you click <strong>Draw graph</strong> or press <strong>Enter</strong>.
+          You may type equations with or without brackets, for example
+          <strong>2 sin x</strong>, <strong>sin 2x</strong>,
+          <strong>sin(0.5x)</strong>, <strong>3 cos(2x)</strong> or <strong>cos 3x</strong>.
+        </p>
+
+        <div class="equation-entry">
+          <strong>y =</strong>
+          <input type="text" id="equationInput" value="2 sin x"
+                 aria-label="Enter a trigonometric equation"
+                 placeholder="e.g. 2 sin x">
+          <button class="primary" id="plotEquationBtn">Draw graph</button>
+        </div>
+
+        <div class="example-buttons">
+          <button type="button" class="eq-example" data-eq="2 sin x">2 sin x</button>
+          <button type="button" class="eq-example" data-eq="sin 2x">sin 2x</button>
+          <button type="button" class="eq-example" data-eq="sin(0.5x)">sin(0.5x)</button>
+          <button type="button" class="eq-example" data-eq="2 cos x">2 cos x</button>
+          <button type="button" class="eq-example" data-eq="cos 2x">cos 2x</button>
+          <button type="button" class="eq-example" data-eq="3 sin 2x">3 sin 2x</button>
+        </div>
+
+        <div class="status" id="equationStatus">
+          Enter an equation, then click <strong>Draw graph</strong>. The graph above will update to your equation.
+        </div>
+      </div>
+    </section>
+
+    <aside class="card">
+      <span class="badge">Student Task</span>
+      <h2>Discover the Rules</h2>
+
+      <div class="task">
+        <p><strong>1. Compare y = sin x and y = 2 sin x.</strong><br>
+        What changes?</p>
+        <div class="choice-row" data-q="ampEffect">
+          <button class="choice" data-v="height">The vertical height changes</button>
+          <button class="choice" data-v="width">The horizontal width changes</button>
+        </div>
+      </div>
+
+      <div class="task">
+        <p><strong>2. The amplitude is the distance from the centre line to the</strong></p>
+        <div class="choice-row" data-q="ampMeaning">
+          <button class="choice" data-v="peak">maximum or minimum point</button>
+          <button class="choice" data-v="intercept">x-intercept</button>
+        </div>
+      </div>
+
+      <div class="task">
+        <p><strong>3. Compare y = sin x and y = sin 2x.</strong><br>
+        From 0° to 360°, how many complete cycles does \(y=\sin 2x\) make?</p>
+        <div class="inline-inputs">
+          <input type="number" id="cycles" min="0" aria-label="Number of cycles">
+          <span>complete cycles</span>
+        </div>
+      </div>
+
+      <div class="task">
+        <p><strong>4. The period is the horizontal distance needed for</strong></p>
+        <div class="choice-row" data-q="periodMeaning">
+          <button class="choice" data-v="onecycle">one complete cycle</button>
+          <button class="choice" data-v="maximum">the graph to reach its maximum</button>
+        </div>
+      </div>
+
+      <div class="task">
+        <p><strong>5. In y = a sin bx or y = a cos bx:</strong></p>
+        <div class="inline-inputs">
+          <span>The number</span>
+          <input type="text" id="ampPart" aria-label="Part controlling amplitude">
+          <span>controls the amplitude.</span>
+        </div>
+        <div class="inline-inputs" style="margin-top:9px">
+          <span>The number</span>
+          <input type="text" id="periodPart" aria-label="Part controlling period">
+          <span>controls the period.</span>
+        </div>
+      </div>
+
+      <div class="task">
+        <p><strong>6. Complete the rules:</strong></p>
+        <div class="inline-inputs">
+          <span>Amplitude =</span>
+          <input type="text" id="ampRule" aria-label="Amplitude rule">
+        </div>
+        <div class="inline-inputs" style="margin-top:9px">
+          <span>Period =</span>
+          <input type="text" id="periodRule" aria-label="Period rule">
+          <span>degrees</span>
+        </div>
+      </div>
+
+      <div class="status" id="quizStatus">Explore the graphs first, then complete the questions.</div>
+
+      <div class="footer-actions">
+        <button class="primary" id="checkBtn">Check answers</button>
+        <button id="resetBtn">Reset answers</button>
+        <button id="revealBtn">Reveal answers</button>
+      </div>
+
+      <div id="mastery" class="summary hidden">
+        <h3>What You Have Discovered</h3>
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Controlled by</th><th>Effect on graph</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Amplitude</strong></td><td>a</td><td>Changes the vertical height</td></tr>
+            <tr><td><strong>Period</strong></td><td>b</td><td>Changes the horizontal width / number of cycles</td></tr>
+          </tbody>
+        </table>
+
+        <div class="formula">For y = a sin bx or y = a cos bx</div>
+        <div class="formula">Amplitude = |a|</div>
+        <div class="formula">Period = 360° ÷ b</div>
+
+        <h3>Examples</h3>
+        <table>
+          <thead>
+            <tr><th>Function</th><th>Amplitude</th><th>Period</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>y = 2 sin x</td><td>2</td><td>360°</td></tr>
+            <tr><td>y = sin 2x</td><td>1</td><td>180°</td></tr>
+            <tr><td>y = 2 cos x</td><td>2</td><td>360°</td></tr>
+            <tr><td>y = cos 2x</td><td>1</td><td>180°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas=document.getElementById('graph');
+  const ctx=canvas.getContext('2d');
+  const family=document.getElementById('family');
+  const aSelect=document.getElementById('aSelect');
+  const bSelect=document.getElementById('bSelect');
+  const basicBtn=document.getElementById('basicBtn');
+  const equationDisplay=document.getElementById('equationDisplay');
+  const mainLegend=document.getElementById('mainLegend');
+  const basicLegend=document.getElementById('basicLegend');
+  const quizStatus=document.getElementById('quizStatus');
+  const mastery=document.getElementById('mastery');
+  const equationInput=document.getElementById('equationInput');
+  const plotEquationBtn=document.getElementById('plotEquationBtn');
+  const equationStatus=document.getElementById('equationStatus');
+
+  const pad={l:62,r:20,t:22,b:48};
+  const xmin=-360,xmax=360,ymin=-3.5,ymax=3.5;
+  let showBasic=true;
+  let selected={};
+
+  function sx(x){return pad.l+(x-xmin)/(xmax-xmin)*(canvas.width-pad.l-pad.r)}
+  function sy(y){return pad.t+(ymax-y)/(ymax-ymin)*(canvas.height-pad.t-pad.b)}
+  function rad(x){return x*Math.PI/180}
+  function trig(x,type){
+    return type==='sin'?Math.sin(rad(x)):Math.cos(rad(x));
+  }
+
+  function drawAxes(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // vertical grid every 30 degrees
+    for(let x=-360;x<=360;x+=30){
+      ctx.beginPath();
+      ctx.strokeStyle=(x%90===0)?'#8793a5':'#d0d7e2';
+      ctx.lineWidth=(x%90===0)?1.1:.7;
+      ctx.moveTo(sx(x),pad.t);
+      ctx.lineTo(sx(x),canvas.height-pad.b);
+      ctx.stroke();
+    }
+
+    // horizontal grid every 0.5; integer labels only
+    for(let y=-3.5;y<=3.5001;y+=0.5){
+      const integer=Math.abs(y-Math.round(y))<1e-8;
+      ctx.beginPath();
+      ctx.strokeStyle=integer?'#8793a5':'#d0d7e2';
+      ctx.lineWidth=integer?1.1:.7;
+      ctx.moveTo(pad.l,sy(y));
+      ctx.lineTo(canvas.width-pad.r,sy(y));
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle='#26354d';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(pad.l,sy(0));
+    ctx.lineTo(canvas.width-pad.r,sy(0));
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(sx(0),pad.t);
+    ctx.lineTo(sx(0),canvas.height-pad.b);
+    ctx.stroke();
+
+    ctx.font='bold 14px Arial';
+    ctx.fillStyle='#26354d';
+
+    // x labels directly on x-axis
+    ctx.textAlign='center';
+    ctx.textBaseline='top';
+    for(let x=-360;x<=360;x+=90){
+      if(x===0) continue;
+      const label=x+'°';
+      const px=sx(x),py=sy(0)+7;
+      const w=ctx.measureText(label).width+6;
+      ctx.fillStyle='rgba(255,255,255,.9)';
+      ctx.fillRect(px-w/2,py-1,w,18);
+      ctx.fillStyle='#26354d';
+      ctx.fillText(label,px,py);
+    }
+
+    // origin
+    ctx.textAlign='right';
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.fillRect(sx(0)-24,sy(0)+6,20,18);
+    ctx.fillStyle='#26354d';
+    ctx.fillText('0',sx(0)-7,sy(0)+7);
+
+    // y labels: integer units only
+    ctx.textAlign='right';
+    ctx.textBaseline='middle';
+    [-3,-2,-1,1,2,3].forEach(y=>{
+      const label=String(y),px=sx(0)-8,py=sy(y);
+      const w=ctx.measureText(label).width+6;
+      ctx.fillStyle='rgba(255,255,255,.9)';
+      ctx.fillRect(px-w,py-9,w+3,18);
+      ctx.fillStyle='#26354d';
+      ctx.fillText(label,px,py);
+    });
+
+    ctx.textBaseline='alphabetic';
+    ctx.textAlign='left';
+    ctx.fillStyle='#26354d';
+    ctx.fillText('y',sx(0)+8,pad.t+13);
+    ctx.textAlign='right';
+    ctx.fillText('x',canvas.width-pad.r-4,sy(0)-9);
+  }
+
+  function drawCurve(a,b,type,color,width=3){
+    ctx.beginPath();
+    for(let x=xmin;x<=xmax;x+=1){
+      const y=a*trig(b*x,type);
+      if(x===xmin) ctx.moveTo(sx(x),sy(y));
+      else ctx.lineTo(sx(x),sy(y));
+    }
+    ctx.strokeStyle=color;
+    ctx.lineWidth=width;
+    ctx.stroke();
+  }
+
+  function equationText(a,b,type){
+    const fn=type==='sin'?'sin':'cos';
+    const aPart=a===1?'':a+' ';
+    const bPart=b===1?'x':b+'x';
+    return 'y = '+aPart+fn+' '+bPart;
+  }
+
+  function render(){
+    const a=Number(aSelect.value);
+    const b=Number(bSelect.value);
+    const type=family.value;
+    drawAxes();
+
+    if(showBasic){
+      drawCurve(1,1,type,'#7048b8',2.3);
+    }
+    drawCurve(a,b,type,'#315efb',3);
+
+    const eq=equationText(a,b,type);
+    const basic=type==='sin'?'y = sin x':'y = cos x';
+    equationDisplay.innerHTML='<strong>Current graph:</strong> '+eq+
+      ' &nbsp; | &nbsp; <strong>Amplitude:</strong> '+a+
+      ' &nbsp; | &nbsp; <strong>Period:</strong> '+(360/b)+'°';
+    mainLegend.textContent=eq;
+    basicLegend.textContent=basic;
+  }
+
+
+  function parseStudentEquation(raw){
+    let s=raw.toLowerCase().trim();
+    s=s.replace(/θ/g,'x');
+    s=s.replace(/\*/g,'');
+    s=s.replace(/\s+/g,'');
+    s=s.replace(/^y=/,'').trim();
+
+    // Accept common student formats:
+    // sinx, sin x, sin(0.5x), sin0.5x, 2sin(x), 3cos(2x), -2sin3x
+    const match=s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))?(sin|cos)\(?([+-]?(?:\d+(?:\.\d*)?|\.\d+))?x\)?$/);
+    if(!match) return null;
+
+    const aText=match[1];
+    const bText=match[3];
+
+    const a=(aText===undefined || aText==='')?1:Number(aText);
+    const b=(bText===undefined || bText==='')?1:Number(bText);
+
+    if(!Number.isFinite(a) || !Number.isFinite(b) || b===0) return null;
+    if(Math.abs(a)>3 || Math.abs(b)>6 || Math.abs(b)<0.5) return {error:'range'};
+
+    return {a:a,b:b,type:match[2]};
+  }
+
+  function plotStudentEquation(){
+    const parsed=parseStudentEquation(equationInput.value);
+
+    if(!parsed){
+      equationStatus.className='status bad';
+      equationStatus.innerHTML='Please use a form such as <strong>2 sin x</strong>, <strong>sin 2x</strong>, <strong>sin 0.5x</strong>, <strong>sin 0.5x</strong>, <strong>3 cos 2x</strong> or <strong>cos 3x</strong>.';
+      return;
+    }
+
+    if(parsed.error==='range'){
+      equationStatus.className='status bad';
+      equationStatus.textContent='For this activity, use amplitude numbers from −3 to 3 and period numbers from 0.5 to 6.';
+      return;
+    }
+
+    const absA=Math.abs(parsed.a);
+    const period=360/Math.abs(parsed.b);
+
+    // Synchronise controls when values are supported by selectors.
+    family.value=parsed.type;
+
+    if([...aSelect.options].some(o=>Number(o.value)===absA)){
+      aSelect.value=String(absA);
+    }
+    if([...bSelect.options].some(o=>Number(o.value)===Math.abs(parsed.b))){
+      bSelect.value=String(Math.abs(parsed.b));
+    }
+
+    drawAxes();
+    if(showBasic) drawCurve(1,1,parsed.type,'#7048b8',2.3);
+    drawCurve(parsed.a,parsed.b,parsed.type,'#315efb',3);
+
+    const fn=parsed.type==='sin'?'sin':'cos';
+    const aShown=parsed.a===1?'':(parsed.a===-1?'-':parsed.a+' ');
+    const bShown=Math.abs(parsed.b)===1?'x':parsed.b+'x';
+    const eq='y = '+aShown+fn+' '+bShown;
+
+    equationDisplay.innerHTML='<strong>Current graph:</strong> '+eq+
+      ' &nbsp; | &nbsp; <strong>Amplitude:</strong> '+absA+
+      ' &nbsp; | &nbsp; <strong>Period:</strong> '+Number(period.toFixed(2))+'°';
+
+    mainLegend.textContent=eq;
+    basicLegend.textContent=parsed.type==='sin'?'y = sin x':'y = cos x';
+
+    equationStatus.className='status good';
+    equationStatus.innerHTML='<strong>'+eq+'</strong>: amplitude = <strong>'+absA+
+      '</strong>, period = <strong>'+Number(period.toFixed(2))+'°</strong>. The graph above has been redrawn using your equation. Compare it with the basic graph.';
+    document.getElementById('s2').classList.add('active');
+  }
+
+  plotEquationBtn.addEventListener('click',plotStudentEquation);
+
+  equationInput.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){
+      e.preventDefault();
+      plotStudentEquation();
+    }
+  });
+
+  let typingTimer=null;
+  equationInput.addEventListener('input',()=>{
+    clearTimeout(typingTimer);
+    typingTimer=setTimeout(()=>{
+      const parsed=parseStudentEquation(equationInput.value);
+      if(parsed && !parsed.error){
+        plotStudentEquation();
+      }
+    },500);
+  });
+
+  document.querySelectorAll('.eq-example').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      equationInput.value=btn.dataset.eq;
+      plotStudentEquation();
+    });
+  });
+
+  [family,aSelect,bSelect].forEach(el=>{
+    el.addEventListener('change',()=>{
+      render();
+      document.getElementById('s2').classList.add('active');
+    });
+  });
+
+  basicBtn.addEventListener('click',()=>{
+    showBasic=!showBasic;
+    basicBtn.textContent=showBasic?'Hide basic graph':'Show basic graph';
+    render();
+  });
+
+  document.querySelectorAll('.choice-row').forEach(group=>{
+    group.addEventListener('click',e=>{
+      if(!e.target.classList.contains('choice')) return;
+      group.querySelectorAll('.choice').forEach(b=>b.classList.remove('correct','wrong'));
+      e.target.classList.add('correct');
+      selected[group.dataset.q]=e.target.dataset.v;
+    });
+  });
+
+  function norm(v){
+    return v.trim().toLowerCase().replace(/\s+/g,'').replace(/°/g,'');
+  }
+  function markText(id,accepted){
+    const el=document.getElementById(id);
+    const val=norm(el.value);
+    el.classList.remove('answer-correct','answer-wrong');
+    if(accepted.includes(val)){
+      el.classList.add('answer-correct');
+      return 1;
+    }
+    el.classList.add('answer-wrong');
+    return 0;
+  }
+  function markNumber(id,correct){
+    const el=document.getElementById(id);
+    el.classList.remove('answer-correct','answer-wrong');
+    if(el.value!=='' && Number(el.value)===correct){
+      el.classList.add('answer-correct');
+      return 1;
+    }
+    el.classList.add('answer-wrong');
+    return 0;
+  }
+  function markChoice(q,correct){
+    const group=document.querySelector('[data-q="'+q+'"]');
+    let ok=selected[q]===correct;
+    group.querySelectorAll('.choice').forEach(b=>{
+      b.classList.remove('correct','wrong');
+      if(selected[q]===b.dataset.v){
+        b.classList.add(b.dataset.v===correct?'correct':'wrong');
+      }
+    });
+    return ok?1:0;
+  }
+
+  document.getElementById('checkBtn').addEventListener('click',()=>{
+    let score=0,total=8;
+    score+=markChoice('ampEffect','height');
+    score+=markChoice('ampMeaning','peak');
+    score+=markNumber('cycles',2);
+    score+=markChoice('periodMeaning','onecycle');
+    score+=markText('ampPart',['a']);
+    score+=markText('periodPart',['b']);
+    score+=markText('ampRule',['|a|','a','absolutevalueofa','absolutevaluea']);
+    score+=markText('periodRule',['360/b','360÷b','360/bdegrees','360overb']);
+
+    if(score===total){
+      quizStatus.className='status good';
+      quizStatus.innerHTML='Excellent! <strong>8/8 correct.</strong> You can now explain how amplitude and period affect sine and cosine graphs.';
+      mastery.classList.remove('hidden');
+      document.getElementById('s3').classList.add('active');
+      document.getElementById('s4').classList.add('active');
+    }else{
+      quizStatus.className='status bad';
+      quizStatus.innerHTML='You have <strong>'+score+'/'+total+'</strong> correct. Compare the basic and transformed graphs again before retrying.';
+      mastery.classList.add('hidden');
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    selected={};
+    document.querySelectorAll('.choice').forEach(b=>b.classList.remove('correct','wrong'));
+    ['cycles','ampPart','periodPart','ampRule','periodRule'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.value='';
+      el.classList.remove('answer-correct','answer-wrong');
+    });
+    quizStatus.className='status';
+    quizStatus.textContent='Answers reset. Explore the graphs and try again.';
+    mastery.classList.add('hidden');
+  });
+
+  document.getElementById('revealBtn').addEventListener('click',()=>{
+    selected.ampEffect='height';
+    selected.ampMeaning='peak';
+    selected.periodMeaning='onecycle';
+
+    document.querySelectorAll('.choice-row').forEach(group=>{
+      const correct={
+        ampEffect:'height',
+        ampMeaning:'peak',
+        periodMeaning:'onecycle'
+      }[group.dataset.q];
+      group.querySelectorAll('.choice').forEach(b=>{
+        b.classList.remove('wrong');
+        b.classList.toggle('correct',b.dataset.v===correct);
+      });
+    });
+
+    document.getElementById('cycles').value='2';
+    document.getElementById('ampPart').value='a';
+    document.getElementById('periodPart').value='b';
+    document.getElementById('ampRule').value='|a|';
+    document.getElementById('periodRule').value='360 ÷ b';
+
+    ['cycles','ampPart','periodPart','ampRule','periodRule'].forEach(id=>{
+      document.getElementById(id).classList.add('answer-correct');
+    });
+
+    quizStatus.className='status';
+    quizStatus.innerHTML='The correct answers are shown. Compare each rule with the graph before moving on.';
+    mastery.classList.remove('hidden');
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

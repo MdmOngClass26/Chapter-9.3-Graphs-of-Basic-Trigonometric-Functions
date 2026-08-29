@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Activity 4 - Effect of c</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#60708a;--accent:#315efb;--purple:#7048b8;--border:#d9e0eb;--good:#147a4b;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1220px;margin:auto;padding:22px}.hero{background:linear-gradient(135deg,#233876,#315efb);color:white;padding:24px;border-radius:18px;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:30px}.hero p{margin:5px 0;line-height:1.5}.grid{display:grid;grid-template-columns:1.45fr .85fr;gap:18px;align-items:start}
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 3px 14px rgba(20,35,70,.05)}
+h2{margin:0 0 12px;font-size:21px}h3{margin:17px 0 8px;font-size:17px}.small{font-size:13px;color:var(--muted);line-height:1.5}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}button,select,input{font:inherit}
+button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;background:#e9eefc;color:#233876}button.primary{background:var(--accent);color:white}
+select,input{border:1px solid var(--border);border-radius:10px;padding:9px 10px;background:white}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:12px;background:white}
+.status{margin-top:10px;padding:11px 12px;border-radius:10px;background:#f2f5fb;line-height:1.5}.status.good{background:#eaf7f0;color:var(--good)}.status.bad{background:#fff0ee;color:var(--bad)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px}.line{display:inline-block;width:24px;height:3px;background:#315efb;vertical-align:middle;margin-right:5px}.line.basic{background:#7048b8}.line.mid{background:#147a4b;height:2px}
+.task{border:1px solid var(--border);border-radius:12px;padding:13px;margin:11px 0;background:#fbfcff}.task p{margin:0 0 9px;line-height:1.55}
+.choice-row{display:flex;flex-wrap:wrap;gap:8px}.choice{background:#f0f3f9;color:#26354d}.choice.correct{background:#dff4e8;color:#11663f}.choice.wrong{background:#fde8e5;color:#9d2118}
+.inline{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.inline input{width:88px;text-align:center;font-weight:700}
+input.ok{border:2px solid var(--good);background:#eaf7f0}input.no{border:2px solid var(--bad);background:#fff0ee}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.summary{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}.hidden{display:none}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid var(--border);padding:8px;text-align:center}th{background:#f1f4fa}
+.formula{text-align:center;font-weight:700;font-size:18px;background:#f2f5fb;padding:10px;border-radius:10px;margin:8px 0}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<h1>Activity 4: Effect of c on Trigonometric Graphs</h1>
+<p><strong>Learning goal:</strong> Discover how <strong>c</strong> affects the graphs of <strong>y = a sin(bx) + c</strong>, <strong>y = a cos(bx) + c</strong> and <strong>y = a tan(bx) + c</strong>.</p>
+<p>Focus question: Does changing <strong>c</strong> move the graph left/right, change its shape, or move it up/down?</p>
+</section>
+
+<div class="grid">
+<section class="card">
+<h2>Explore: Change c</h2>
+<div class="controls">
+<label><strong>Function:</strong>
+<select id="fn"><option value="sin">Sine</option><option value="cos">Cosine</option><option value="tan">Tangent</option></select></label>
+<label><strong>a:</strong><select id="a"><option>1</option><option>2</option><option>3</option></select></label>
+<label><strong>b:</strong><select id="b"><option value="0.5">0.5</option><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option></select></label>
+<label><strong>c:</strong><select id="c"><option value="-3">−3</option><option value="-2">−2</option><option value="-1">−1</option><option value="0" selected>0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+</div>
+<div class="status" id="eq"></div>
+<canvas id="graph" width="900" height="520"></canvas>
+<div class="legend"><span><i class="line"></i>Transformed graph</span><span><i class="line basic"></i>Same graph with c = 0</span><span id="midLegend"><i class="line mid"></i>Centre line y = c</span></div>
+<div class="status" id="observe">Try <strong>c = 2</strong>, then <strong>c = −2</strong>. Keep a and b unchanged and observe what happens.</div>
+
+<h3>Try Your Own Equation</h3>
+<p class="small">Type an equation such as <strong>sin x + 2</strong>, <strong>2 cos(2x) − 1</strong> or <strong>tan x + 3</strong>.</p>
+<div class="inline">
+<strong>y =</strong><input id="custom" style="width:auto;flex:1;min-width:220px" value="sin x + 2">
+<button class="primary" id="draw">Draw graph</button>
+</div>
+<div class="status" id="customStatus">Your graph will appear above and will be compared with the same function when c = 0.</div>
+</section>
+
+<aside class="card">
+<h2>Student Discovery Task</h2>
+<div class="task">
+<p><strong>1.</strong> Compare y = sin x and y = sin x + 2. What happens to the graph?</p>
+<div class="choice-row" data-q="direction"><button class="choice" data-v="up">Moves 2 units up</button><button class="choice" data-v="right">Moves 2 units right</button><button class="choice" data-v="stretch">Becomes taller</button></div>
+</div>
+<div class="task">
+<p><strong>2.</strong> Compare y = cos x and y = cos x − 2. What happens?</p>
+<div class="choice-row" data-q="negative"><button class="choice" data-v="down">Moves 2 units down</button><button class="choice" data-v="left">Moves 2 units left</button></div>
+</div>
+<div class="task">
+<p><strong>3.</strong> For y = a sin(bx) + c and y = a cos(bx) + c, the centre line is</p>
+<div class="inline"><span>y =</span><input id="centre"></div>
+</div>
+<div class="task">
+<p><strong>4.</strong> Does changing c change the amplitude or period?</p>
+<div class="choice-row" data-q="ampperiod"><button class="choice" data-v="no">No</button><button class="choice" data-v="yes">Yes</button></div>
+</div>
+<div class="task">
+<p><strong>5.</strong> What does c control?</p>
+<div class="choice-row" data-q="meaning"><button class="choice" data-v="vertical">Vertical translation</button><button class="choice" data-v="horizontal">Horizontal translation</button><button class="choice" data-v="period">Period</button></div>
+</div>
+<div class="task">
+<p><strong>6.</strong> What happens to y = tan x + c?</p>
+<div class="choice-row" data-q="tan"><button class="choice" data-v="vertical">The tangent curve moves vertically</button><button class="choice" data-v="asym">The vertical asymptotes move left/right</button></div>
+</div>
+<div class="status" id="quiz">Explore the graphs, then complete the questions.</div>
+<div class="actions"><button class="primary" id="check">Check answers</button><button id="reset">Reset</button><button id="reveal">Reveal answers</button></div>
+
+<div class="summary hidden" id="summary">
+<h3>Rule Discovered</h3>
+<div class="formula">+ c moves the entire graph vertically</div>
+<table>
+<tr><th>Value of c</th><th>Effect</th></tr>
+<tr><td>c &gt; 0</td><td>Moves graph up c units</td></tr>
+<tr><td>c &lt; 0</td><td>Moves graph down |c| units</td></tr>
+<tr><td>c = 0</td><td>No vertical translation</td></tr>
+</table>
+<p class="small"><strong>Sine/Cosine:</strong> centre line becomes y = c. Amplitude and period do not change.<br><strong>Tangent:</strong> the curve moves up/down, while its vertical asymptote x-values remain unchanged.</p>
+</div>
+</aside>
+</div>
+</div>
+
+<script>
+(()=>{
+const canvas=document.getElementById('graph'),ctx=canvas.getContext('2d');
+const fn=document.getElementById('fn'),aEl=document.getElementById('a'),bEl=document.getElementById('b'),cEl=document.getElementById('c');
+const eq=document.getElementById('eq'),midLegend=document.getElementById('midLegend');
+const pad={l:60,r:20,t:20,b:46},xmin=-360,xmax=360,ymin=-5,ymax=5;
+const sx=x=>pad.l+(x-xmin)/(xmax-xmin)*(canvas.width-pad.l-pad.r);
+const sy=y=>pad.t+(ymax-y)/(ymax-ymin)*(canvas.height-pad.t-pad.b);
+const rad=x=>x*Math.PI/180;
+function baseVal(type,x,b){if(type==='sin')return Math.sin(rad(b*x));if(type==='cos')return Math.cos(rad(b*x));return Math.tan(rad(b*x))}
+function axes(){
+ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+for(let x=-360;x<=360;x+=30){ctx.beginPath();ctx.strokeStyle=x%90===0?'#8b96a8':'#d6dce6';ctx.lineWidth=x%90===0?1.1:.7;ctx.moveTo(sx(x),pad.t);ctx.lineTo(sx(x),canvas.height-pad.b);ctx.stroke()}
+for(let y=-5;y<=5;y+=.5){ctx.beginPath();ctx.strokeStyle=Math.abs(y-Math.round(y))<1e-8?'#8b96a8':'#d6dce6';ctx.lineWidth=1;ctx.moveTo(pad.l,sy(y));ctx.lineTo(canvas.width-pad.r,sy(y));ctx.stroke()}
+ctx.strokeStyle='#26354d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad.l,sy(0));ctx.lineTo(canvas.width-pad.r,sy(0));ctx.stroke();ctx.beginPath();ctx.moveTo(sx(0),pad.t);ctx.lineTo(sx(0),canvas.height-pad.b);ctx.stroke();
+ctx.font='bold 13px Arial';ctx.fillStyle='#26354d';ctx.textAlign='center';ctx.textBaseline='top';
+for(let x=-360;x<=360;x+=90){if(x!==0)ctx.fillText(x+'°',sx(x),sy(0)+7)}
+ctx.textAlign='right';ctx.fillText('0',sx(0)-7,sy(0)+7);ctx.textBaseline='middle';
+[-4,-3,-2,-1,1,2,3,4].forEach(y=>ctx.fillText(String(y),sx(0)-8,sy(y)));
+}
+function curve(type,a,b,c,color,w){
+ctx.strokeStyle=color;ctx.lineWidth=w;
+if(type!=='tan'){
+ctx.beginPath();for(let x=xmin;x<=xmax;x+=1){let y=a*baseVal(type,x,b)+c;if(x===xmin)ctx.moveTo(sx(x),sy(y));else ctx.lineTo(sx(x),sy(y))}ctx.stroke();
+}else{
+let started=false,lastY=null;
+for(let x=xmin;x<=xmax;x+=.4){let y=a*baseVal(type,x,b)+c;let jump=lastY!==null&&Math.abs(y-lastY)>2;
+if(!Number.isFinite(y)||Math.abs(y)>20||jump){if(started)ctx.stroke();ctx.beginPath();started=false;lastY=y;continue}
+if(!started){ctx.beginPath();ctx.moveTo(sx(x),sy(y));started=true}else ctx.lineTo(sx(x),sy(y));lastY=y}
+if(started)ctx.stroke();
+}
+}
+function label(type,a,b,c){let f=type==='sin'?'sin':type==='cos'?'cos':'tan';let aa=a===1?'':a+' ';let bb=b===1?'x':b+'x';let cc=c===0?'':c>0?' + '+c:' − '+Math.abs(c);return 'y = '+aa+f+'('+bb+')'+cc}
+function render(type=fn.value,a=+aEl.value,b=+bEl.value,c=+cEl.value){
+axes();curve(type,a,b,0,'#7048b8',2.1);curve(type,a,b,c,'#315efb',3);
+if(type!=='tan'){ctx.save();ctx.setLineDash([7,5]);ctx.strokeStyle='#147a4b';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(pad.l,sy(c));ctx.lineTo(canvas.width-pad.r,sy(c));ctx.stroke();ctx.restore();midLegend.style.display='inline'}else midLegend.style.display='none';
+eq.innerHTML='<strong>Current graph:</strong> '+label(type,a,b,c)+' &nbsp; | &nbsp; <strong>c = '+c+'</strong> → '+(c>0?'moves up '+c+' unit'+(c===1?'':'s'):c<0?'moves down '+Math.abs(c)+' unit'+(Math.abs(c)===1?'':'s'):'no vertical translation');
+}
+[fn,aEl,bEl,cEl].forEach(e=>e.addEventListener('change',()=>render()));
+
+function parse(raw){
+let s=raw.toLowerCase().replace(/θ/g,'x').replace(/\*/g,'').replace(/\s+/g,'').replace(/^y=/,'');
+let m=s.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))?(sin|cos|tan)\(?([+-]?(?:\d+(?:\.\d*)?|\.\d+))?x\)?([+-](?:\d+(?:\.\d*)?|\.\d+))?$/);
+if(!m)return null;let a=m[1]?+m[1]:1,b=m[3]?+m[3]:1,c=m[4]?+m[4]:0;if(!isFinite(a)||!isFinite(b)||!isFinite(c)||b===0)return null;return{a,b,c,type:m[2]}
+}
+document.getElementById('draw').addEventListener('click',drawCustom);
+document.getElementById('custom').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();drawCustom()}});
+function drawCustom(){let p=parse(document.getElementById('custom').value),st=document.getElementById('customStatus');if(!p){st.className='status bad';st.innerHTML='Use a form such as <strong>sin x + 2</strong>, <strong>2 cos(2x) − 1</strong> or <strong>tan x + 3</strong>.';return}if(Math.abs(p.a)>3||Math.abs(p.b)>3||Math.abs(p.c)>4){st.className='status bad';st.textContent='For this activity, keep |a| ≤ 3, |b| ≤ 3 and |c| ≤ 4.';return}render(p.type,p.a,p.b,p.c);st.className='status good';st.innerHTML='<strong>'+label(p.type,p.a,p.b,p.c)+'</strong> has c = <strong>'+p.c+'</strong>, so the graph is shifted '+(p.c>0?'up '+p.c:p.c<0?'down '+Math.abs(p.c):'by 0')+' unit'+(Math.abs(p.c)===1?'':'s')+'.';}
+
+let answers={};
+document.querySelectorAll('.choice-row').forEach(g=>g.addEventListener('click',e=>{if(!e.target.classList.contains('choice'))return;g.querySelectorAll('.choice').forEach(b=>b.classList.remove('correct','wrong'));answers[g.dataset.q]=e.target.dataset.v;e.target.classList.add('correct')}));
+const correct={direction:'up',negative:'down',ampperiod:'no',meaning:'vertical',tan:'vertical'};
+function checkChoice(q){let g=document.querySelector('[data-q="'+q+'"]'),ok=answers[q]===correct[q];g.querySelectorAll('.choice').forEach(b=>{b.classList.remove('correct','wrong');if(answers[q]===b.dataset.v)b.classList.add(ok?'correct':'wrong')});return ok?1:0}
+document.getElementById('check').addEventListener('click',()=>{let score=0;Object.keys(correct).forEach(q=>score+=checkChoice(q));let cent=document.getElementById('centre');cent.classList.remove('ok','no');if(cent.value.trim().toLowerCase()==='c'){score++;cent.classList.add('ok')}else cent.classList.add('no');let q=document.getElementById('quiz');if(score===6){q.className='status good';q.innerHTML='Excellent! <strong>6/6 correct.</strong> You have discovered that c controls vertical translation.';document.getElementById('summary').classList.remove('hidden')}else{q.className='status bad';q.innerHTML='You have <strong>'+score+'/6</strong> correct. Change c on the graph and try again.'}});
+document.getElementById('reset').addEventListener('click',()=>{answers={};document.querySelectorAll('.choice').forEach(b=>b.classList.remove('correct','wrong'));let cent=document.getElementById('centre');cent.value='';cent.classList.remove('ok','no');document.getElementById('quiz').className='status';document.getElementById('quiz').textContent='Explore the graphs, then complete the questions.';document.getElementById('summary').classList.add('hidden')});
+document.getElementById('reveal').addEventListener('click',()=>{answers={...correct};document.querySelectorAll('.choice-row').forEach(g=>g.querySelectorAll('.choice').forEach(b=>{b.classList.remove('wrong');b.classList.toggle('correct',b.dataset.v===correct[g.dataset.q])}));let cent=document.getElementById('centre');cent.value='c';cent.classList.add('ok');document.getElementById('summary').classList.remove('hidden');document.getElementById('quiz').className='status good';document.getElementById('quiz').textContent='Correct answers are shown. Study the rule and compare it with the graphs.'});
+render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sine & Cosine Graph Mastery</title>
+<style>
+:root{
+  --navy:#173a70;
+  --blue:#2563eb;
+  --green:#15803d;
+  --orange:#d97706;
+  --red:#c62828;
+  --purple:#7c3aed;
+  --ink:#172033;
+  --muted:#667085;
+  --line:#d6dce5;
+  --minor:#edf1f5;
+  --soft:#f6f8fb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:22px;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f6fa;
+  color:var(--ink);
+}
+.wrap{max-width:1180px;margin:auto}
+h1{
+  text-align:center;
+  color:var(--navy);
+  margin:0 0 6px;
+  font-size:34px;
+}
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:20px;
+  font-size:16px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 3px 14px rgba(0,0,0,.07);
+}
+.section-title{
+  margin:0 0 12px;
+  color:var(--navy);
+}
+.intro{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:16px;
+  align-items:start;
+}
+.goal{
+  padding:16px;
+  border:2px solid #dbe6fb;
+  border-radius:12px;
+  background:#f8fbff;
+}
+.goal strong{color:var(--navy)}
+.compare{
+  padding:16px;
+  border:2px solid #e5e7eb;
+  border-radius:12px;
+  background:#fafafa;
+}
+.compare table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:15px;
+}
+.compare th,.compare td{
+  padding:8px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+}
+.input-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.eq{
+  font-size:23px;
+  font-weight:700;
+}
+input{
+  flex:1;
+  min-width:230px;
+  min-height:46px;
+  border:2px solid #cbd5e1;
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:18px;
+}
+button{
+  min-height:44px;
+  border:0;
+  border-radius:10px;
+  padding:10px 16px;
+  background:var(--blue);
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+button.secondary{background:#64748b}
+button.challenge{background:var(--purple)}
+button:hover{opacity:.93}
+.examples{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:14px;
+}
+.examples button{
+  background:#eaf0fb;
+  color:var(--navy);
+  min-height:54px;
+  font-size:17px;
+}
+#message{margin-top:10px;font-weight:700}
+.ok{color:var(--green)}
+.err{color:var(--red)}
+
+canvas{
+  width:100%;
+  display:block;
+  border:1px solid #cfd5dd;
+  border-radius:12px;
+  background:#fff;
+}
+.legend{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-top:10px;
+  font-size:14px;
+}
+.swatch{
+  display:inline-block;
+  width:22px;
+  height:3px;
+  margin-right:6px;
+  vertical-align:middle;
+}
+.blue{background:var(--blue)}
+.red{background:var(--red)}
+.green{background:var(--green)}
+.orange{background:var(--orange)}
+
+.property-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+.property{
+  text-align:center;
+  background:#eef4ff;
+  border-radius:12px;
+  padding:14px;
+}
+.property small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+.property strong{
+  font-size:19px;
+  color:var(--navy);
+}
+.learn-box{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.learn{
+  border:2px solid #d7dce3;
+  border-radius:12px;
+  padding:16px 18px;
+  background:#fbfcfe;
+}
+.learn h3{margin:0 0 8px;color:var(--navy)}
+.formula{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:21px;
+  line-height:1.6;
+}
+.keyword{
+  display:inline-block;
+  margin-top:7px;
+  background:#fff3cd;
+  border:1px solid #f1d58a;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:14px;
+  font-weight:700;
+}
+
+.worksheet{
+  margin-top:16px;
+  border:2px solid #d7dce3;
+  border-radius:12px;
+  padding:18px 22px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:19px;
+  line-height:1.65;
+}
+.worksheet h3{
+  margin:0 0 10px;
+  font-size:23px;
+  font-weight:400;
+}
+.challenge-box{
+  border:2px solid #ddd6fe;
+  background:#faf8ff;
+  border-radius:12px;
+  padding:18px;
+}
+.options{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+.option{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid #d8dce3;
+  border-radius:9px;
+  padding:11px;
+  background:#fff;
+}
+.progress{
+  height:16px;
+  background:#e5e7eb;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.bar{
+  height:100%;
+  width:0;
+  background:#1f8b4c;
+  transition:width .25s;
+}
+.feedback{margin-top:12px;font-weight:700}
+
+@media(max-width:850px){
+  .intro,.learn-box{grid-template-columns:1fr}
+  .examples{grid-template-columns:repeat(2,1fr)}
+  .property-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  body{padding:10px}
+  h1{font-size:27px}
+  .input-row{flex-direction:column;align-items:stretch}
+  input,button{width:100%}
+  .examples,.property-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Sine & Cosine Graph Mastery</h1>
+<div class="subtitle">See the graph → identify what changes → explain amplitude and period → master the idea</div>
+
+<div class="card">
+  <div class="intro">
+    <div class="goal">
+      <h2 class="section-title">Learning Goal</h2>
+      <p>Learn how the numbers in <strong>y = a sin bx</strong> and <strong>y = a cos bx</strong> change the graph.</p>
+      <p><strong>Number in front:</strong> changes the amplitude.</p>
+      <p><strong>Number beside x:</strong> changes the period.</p>
+    </div>
+    <div class="compare">
+      <h2 class="section-title">Quick Rule</h2>
+      <table>
+        <tr><th>Form</th><th>What changes?</th></tr>
+        <tr><td>y = 2 sin x</td><td>Amplitude</td></tr>
+        <tr><td>y = sin 2x</td><td>Period</td></tr>
+        <tr><td>y = 2 cos x</td><td>Amplitude</td></tr>
+        <tr><td>y = cos 2x</td><td>Period</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2 class="section-title">1. Choose a graph</h2>
+
+  <div class="input-row">
+    <span class="eq">y =</span>
+    <input id="equation" value="2sin(x)" aria-label="Trigonometric equation">
+    <button id="drawBtn">Draw & Analyse</button>
+    <button id="resetBtn" class="secondary">Reset</button>
+  </div>
+
+  <div class="examples">
+    <button data-eq="2sin(x)">y = 2 sin x</button>
+    <button data-eq="sin(2x)">y = sin 2x</button>
+    <button data-eq="2cos(x)">y = 2 cos x</button>
+    <button data-eq="cos(2x)">y = cos 2x</button>
+  </div>
+
+  <div id="message" aria-live="polite"></div>
+</div>
+
+<div class="card">
+  <h2 id="graphTitle" class="section-title">Graph of y = 2 sin x</h2>
+  <canvas id="graph" width="1100" height="610"></canvas>
+
+  <div class="legend">
+    <span><span class="swatch blue"></span>Graph</span>
+    <span><span class="swatch red"></span>x-intercepts</span>
+    <span><span class="swatch green"></span>maximum points</span>
+    <span><span class="swatch orange"></span>minimum points</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2 class="section-title">2. Important Properties</h2>
+
+  <div class="property-grid">
+    <div class="property"><small>Function</small><strong id="functionValue">SINE</strong></div>
+    <div class="property"><small>Amplitude</small><strong id="amplitudeValue">2</strong></div>
+    <div class="property"><small>Period</small><strong id="periodValue">360°</strong></div>
+    <div class="property"><small>Maximum</small><strong id="maximumValue">2</strong></div>
+    <div class="property"><small>Minimum</small><strong id="minimumValue">−2</strong></div>
+  </div>
+
+  <div class="learn-box">
+    <div class="learn">
+      <h3>Amplitude</h3>
+      <div id="amplitudeExplanation" class="formula"></div>
+      <span class="keyword">Keyword: number in front</span>
+    </div>
+
+    <div class="learn">
+      <h3>Period</h3>
+      <div id="periodExplanation" class="formula"></div>
+      <span class="keyword">Keyword: number beside x</span>
+    </div>
+  </div>
+
+  <div class="worksheet">
+    <h3 id="characteristicTitle">Characteristics</h3>
+    <div id="characteristicText"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2 class="section-title">3. Mastery Challenge</h2>
+
+  <div class="challenge-box">
+    <div id="question"><strong>Press “New Challenge” to begin.</strong></div>
+    <div id="options" class="options"></div>
+
+    <div class="input-row" style="margin-top:14px">
+      <button id="newChallenge" class="challenge">New Challenge</button>
+      <button id="checkBtn">Check Answer</button>
+      <button id="hintBtn" class="secondary">Hint</button>
+    </div>
+
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+
+    <div style="margin-top:12px;color:#4b5563">
+      Correct: <strong id="correct">0</strong>
+      &nbsp;&nbsp;
+      Attempts: <strong id="attempts">0</strong>
+      &nbsp;&nbsp;
+      Mastery: <strong id="mastery">0%</strong>
+    </div>
+
+    <div class="progress"><div id="bar" class="bar"></div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const canvas=document.getElementById("graph");
+const ctx=canvas.getContext("2d");
+const input=document.getElementById("equation");
+
+let current=null;
+let challenge=null;
+let correct=0;
+let attempts=0;
+
+function clean(n){
+  if(Math.abs(n-Math.round(n))<0.001) return String(Math.round(n));
+  return String(Number(n.toFixed(2)));
+}
+function angle(n){return String(Math.round(n));}
+
+function parseEquation(text){
+  const s=text.toLowerCase()
+    .replace(/\s+/g,"")
+    .replace(/^y=/,"")
+    .replace(/−/g,"-");
+
+  const m=s.match(/^([+-]?(?:\d*\.?\d+)?)?(sin|cos)\(([-+]?\d*\.?\d*)x\)([+-]\d*\.?\d+)?$/);
+  if(!m) return null;
+
+  const a=(m[1]===undefined||m[1]===""||m[1]==="+")?1:
+          (m[1]==="-"?-1:Number(m[1]));
+  const b=(m[3]===undefined||m[3]===""||m[3]==="+")?1:
+          (m[3]==="-"?-1:Number(m[3]));
+  const c=m[4]?Number(m[4]):0;
+
+  if(!Number.isFinite(a)||!Number.isFinite(b)||!Number.isFinite(c)||b===0) return null;
+  return {a,fn:m[2],b,c};
+}
+
+function formatEquation(p){
+  const a=p.a===1?"":(p.a===-1?"−":clean(p.a));
+  const b=p.b===1?"":(p.b===-1?"−":clean(p.b));
+  const c=p.c>0?" + "+clean(p.c):(p.c<0?" − "+clean(Math.abs(p.c)):"");
+  return a+p.fn+"("+b+"x)"+c;
+}
+
+function f(p,x){
+  const r=p.b*x*Math.PI/180;
+  return p.fn==="sin"
+    ? p.a*Math.sin(r)+p.c
+    : p.a*Math.cos(r)+p.c;
+}
+
+function findRoots(p){
+  const roots=[];
+  const step=.25;
+  let prevX=0,prevY=f(p,0);
+
+  if(Math.abs(prevY)<0.001) roots.push(0);
+
+  for(let x=step;x<=360;x+=step){
+    const y=f(p,x);
+
+    if(Math.abs(y)<0.001){
+      if(!roots.some(r=>Math.abs(r-x)<1)) roots.push(x);
+    } else if(prevY*y<0){
+      let lo=prevX,hi=x;
+      for(let k=0;k<25;k++){
+        const mid=(lo+hi)/2;
+        if(f(p,lo)*f(p,mid)<=0) hi=mid;
+        else lo=mid;
+      }
+      const root=(lo+hi)/2;
+      if(!roots.some(r=>Math.abs(r-root)<1)) roots.push(root);
+    }
+
+    prevX=x;prevY=y;
+  }
+
+  return roots.map(v=>Math.round(v));
+}
+
+function extrema(p){
+  const max=p.c+Math.abs(p.a);
+  const min=p.c-Math.abs(p.a);
+  const maxPts=[],minPts=[];
+
+  for(let x=0;x<=360;x+=.25){
+    const y=f(p,x);
+    if(Math.abs(y-max)<.0006){
+      if(!maxPts.some(q=>Math.abs(q.x-x)<2)) maxPts.push({x,y:max});
+    }
+    if(Math.abs(y-min)<.0006){
+      if(!minPts.some(q=>Math.abs(q.x-x)<2)) minPts.push({x,y:min});
+    }
+  }
+  return {max,min,maxPts,minPts};
+}
+
+function drawGraph(){
+  if(!current)return;
+  const p=current;
+  const W=canvas.width,H=canvas.height;
+  const xMin=0,xMax=360;
+
+  const ext=extrema(p);
+  const yMin=Math.floor(Math.min(ext.min-1,-3));
+  const yMax=Math.ceil(Math.max(ext.max+1,3));
+
+  const left=70,right=28,top=28,bottom=58;
+  const X=x=>left+(x-xMin)/(xMax-xMin)*(W-left-right);
+  const Y=y=>top+(yMax-y)/(yMax-yMin)*(H-top-bottom);
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,W,H);
+
+  // Grid: 6 equal subdivisions per 90 degrees.
+  for(let x=0;x<=360;x+=15){
+    ctx.beginPath();
+    ctx.strokeStyle=(x%90===0)?"#c3c9d2":"#e3e7ed";
+    ctx.lineWidth=(x%90===0)?1.3:.9;
+    ctx.moveTo(X(x),top);
+    ctx.lineTo(X(x),H-bottom);
+    ctx.stroke();
+  }
+
+  for(let y=Math.ceil(yMin*2)/2;y<=yMax;y+=.5){
+    const whole=Math.abs(y-Math.round(y))<.001;
+    ctx.beginPath();
+    ctx.strokeStyle=whole?"#cfd5dd":"#e8ebef";
+    ctx.lineWidth=whole?1.2:.8;
+    ctx.moveTo(left,Y(y));
+    ctx.lineTo(W-right,Y(y));
+    ctx.stroke();
+  }
+
+  // axes
+  ctx.strokeStyle="#111";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(left,Y(0));
+  ctx.lineTo(W-right,Y(0));
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(X(0),top);
+  ctx.lineTo(X(0),H-bottom);
+  ctx.stroke();
+
+  // labels
+  ctx.fillStyle="#111";
+  ctx.font="bold 15px Arial";
+  ctx.textAlign="center";
+  ctx.textBaseline="top";
+
+  [0,90,180,270,360].forEach(x=>{
+    const label=x===0?"0":x+"°";
+    ctx.fillText(label,X(x)+(x===0?10:0),Y(0)+8);
+  });
+
+  ctx.textAlign="right";
+  ctx.textBaseline="middle";
+  for(let y=Math.ceil(yMin);y<=Math.floor(yMax);y++){
+    if(y!==0)ctx.fillText(clean(y),X(0)-9,Y(y));
+  }
+
+  // graph
+  ctx.strokeStyle="#2563eb";
+  ctx.lineWidth=4;
+  ctx.lineJoin="round";
+  ctx.lineCap="round";
+  ctx.beginPath();
+  let started=false;
+
+  for(let x=0;x<=360;x+=.25){
+    const y=f(p,x);
+    if(!started){
+      ctx.moveTo(X(x),Y(y));
+      started=true;
+    }else{
+      ctx.lineTo(X(x),Y(y));
+    }
+  }
+  ctx.stroke();
+
+  // points
+  drawPoints(findRoots(p).map(x=>({x,y:0})),"#c62828",X,Y);
+  drawPoints(ext.maxPts,"#15803d",X,Y);
+  drawPoints(ext.minPts,"#d97706",X,Y);
+}
+
+function drawPoints(points,color,X,Y){
+  ctx.fillStyle=color;
+  ctx.font="bold 13px Arial";
+
+  points.forEach(q=>{
+    const px=X(q.x),py=Y(q.y);
+
+    ctx.beginPath();
+    ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.textAlign="center";
+    ctx.textBaseline=q.y>=0?"bottom":"top";
+    const offset=q.y>=0?-8:8;
+    ctx.fillText("("+angle(q.x)+", "+clean(q.y)+")",px,py+offset);
+  });
+}
+
+function updateProperties(){
+  const p=current;
+  const amp=Math.abs(p.a);
+  const period=360/Math.abs(p.b);
+  const ext=extrema(p);
+
+  document.getElementById("functionValue").textContent=
+    p.fn==="sin"?"SINE":"COSINE";
+  document.getElementById("amplitudeValue").textContent=clean(amp);
+  document.getElementById("periodValue").textContent=angle(period)+"°";
+  document.getElementById("maximumValue").textContent=clean(ext.max);
+  document.getElementById("minimumValue").textContent=clean(ext.min);
+
+  document.getElementById("amplitudeExplanation").innerHTML=
+    "Amplitude = <strong>"+clean(amp)+"</strong><br>"+
+    "The number <strong>"+clean(Math.abs(p.a))+"</strong> in front changes the height of the graph.";
+
+  document.getElementById("periodExplanation").innerHTML=
+    "Period = 360° ÷ "+clean(Math.abs(p.b))+
+    " = <strong>"+angle(period)+"°</strong><br>"+
+    "The graph repeats every <strong>"+angle(period)+"°</strong>.";
+
+  const roots=findRoots(p);
+  const rootText=roots.length?roots.map(x=>x+"°").join(", "):"none";
+  const range=clean(ext.min)+" ≤ y ≤ "+clean(ext.max);
+
+  document.getElementById("characteristicTitle").textContent=
+    "Characteristics of y = "+formatEquation(p)+" for 0° ≤ x ≤ 360°";
+
+  document.getElementById("characteristicText").innerHTML=
+    "<ul style='margin:0;padding-left:28px'>"+
+    "<li>At the x-axis, y = 0 when x = <strong>"+rootText+"</strong>.</li>"+
+    "<li>The maximum value is <strong>"+clean(ext.max)+"</strong>.</li>"+
+    "<li>The minimum value is <strong>"+clean(ext.min)+"</strong>.</li>"+
+    "<li>Hence, <strong>"+range+"</strong>.</li>"+
+    "<li>The amplitude is <strong>"+clean(amp)+"</strong>.</li>"+
+    "<li>The period is <strong>"+angle(period)+"°</strong>.</li>"+
+    "</ul>";
+}
+
+function render(){
+  const p=parseEquation(input.value);
+  const msg=document.getElementById("message");
+
+  if(!p){
+    msg.className="err";
+    msg.textContent="Use a sine or cosine form such as 2sin(x), sin(2x), 2cos(x) or cos(2x).";
+    return;
+  }
+
+  current=p;
+  msg.className="ok";
+  msg.textContent="✓ Equation recognised.";
+  document.getElementById("graphTitle").textContent="Graph of y = "+formatEquation(p);
+  updateProperties();
+  drawGraph();
+}
+
+function newChallenge(){
+  const bank=[
+    {
+      eq:"2sin(x)",
+      q:"For y = 2 sin x, which property changes compared with y = sin x?",
+      opts:["Amplitude","Period","Both amplitude and period"],
+      correct:0,
+      hint:"Look at the number in front of sin."
+    },
+    {
+      eq:"sin(2x)",
+      q:"What is the period of y = sin 2x?",
+      opts:["360°","180°","90°"],
+      correct:1,
+      hint:"Use 360° ÷ 2."
+    },
+    {
+      eq:"2cos(x)",
+      q:"What is the amplitude of y = 2 cos x?",
+      opts:["1","2","180"],
+      correct:1,
+      hint:"Look at the number in front of cos."
+    },
+    {
+      eq:"cos(2x)",
+      q:"Compared with y = cos x, what happens to y = cos 2x?",
+      opts:["The amplitude doubles","The period becomes 180°","The period becomes 720°"],
+      correct:1,
+      hint:"The number beside x affects the period."
+    },
+    {
+      eq:"3sin(x)",
+      q:"What is the amplitude of y = 3 sin x?",
+      opts:["3","120°","360°"],
+      correct:0,
+      hint:"Amplitude is determined by the number in front."
+    },
+    {
+      eq:"cos(3x)",
+      q:"What is the period of y = cos 3x?",
+      opts:["360°","180°","120°"],
+      correct:2,
+      hint:"Use 360° ÷ 3."
+    }
+  ];
+
+  challenge=bank[Math.floor(Math.random()*bank.length)];
+  input.value=challenge.eq;
+  render();
+
+  document.getElementById("question").innerHTML="<strong>"+challenge.q+"</strong>";
+  const options=document.getElementById("options");
+  options.innerHTML="";
+
+  challenge.opts.forEach((text,i)=>{
+    const label=document.createElement("label");
+    label.className="option";
+    label.innerHTML='<input type="radio" name="answer" value="'+i+'"> <span>'+text+'</span>';
+    options.appendChild(label);
+  });
+
+  document.getElementById("feedback").textContent="";
+}
+
+function checkAnswer(){
+  if(!challenge){
+    document.getElementById("feedback").textContent="Start a new challenge first.";
+    return;
+  }
+
+  const chosen=document.querySelector('input[name="answer"]:checked');
+  if(!chosen){
+    document.getElementById("feedback").textContent="Choose an answer first.";
+    return;
+  }
+
+  attempts++;
+
+  if(Number(chosen.value)===challenge.correct){
+    correct++;
+    document.getElementById("feedback").innerHTML=
+      '<span class="ok">✓ Correct. Well done.</span>';
+  }else{
+    document.getElementById("feedback").innerHTML=
+      '<span class="err">Not yet. Use the graph and the keyword boxes to try again.</span>';
+  }
+
+  updateScore();
+}
+
+function updateScore(){
+  const pct=attempts?Math.round(correct/attempts*100):0;
+  document.getElementById("correct").textContent=correct;
+  document.getElementById("attempts").textContent=attempts;
+  document.getElementById("mastery").textContent=pct+"%";
+  document.getElementById("bar").style.width=pct+"%";
+}
+
+document.getElementById("drawBtn").addEventListener("click",render);
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  input.value="2sin(x)";
+  render();
+});
+document.querySelectorAll(".examples button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    input.value=btn.dataset.eq;
+    render();
+  });
+});
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter")render();
+});
+document.getElementById("newChallenge").addEventListener("click",newChallenge);
+document.getElementById("checkBtn").addEventListener("click",checkAnswer);
+document.getElementById("hintBtn").addEventListener("click",()=>{
+  document.getElementById("feedback").textContent=
+    challenge?"Hint: "+challenge.hint:"Start a new challenge first.";
+});
+
+render();
+</script>
+</body>
+</html>
